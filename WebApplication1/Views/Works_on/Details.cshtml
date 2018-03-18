@@ -1,0 +1,42 @@
+﻿@model WebApplication1.Models.Works_on
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Works_on</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Hours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.FName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.FName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Project.PName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Project.PName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

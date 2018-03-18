@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CompanyModelStoreContainer" CdmEntityContainer="CompanyEntities">
+    <EntitySetMapping Name="Department">
+      <EntityTypeMapping TypeName="CompanyModel.Department">
+        <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="DName" ColumnName="DName" />
+          <ScalarProperty Name="DNumber" ColumnName="DNumber" />
+          <ScalarProperty Name="MgrSSN" ColumnName="MgrSSN" />
+          <ScalarProperty Name="MgrStartDate" ColumnName="MgrStartDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dependent">
+      <EntityTypeMapping TypeName="CompanyModel.Dependent">
+        <MappingFragment StoreEntitySet="Dependent">
+          <ScalarProperty Name="Essn" ColumnName="Essn" />
+          <ScalarProperty Name="Dependent_Name" ColumnName="Dependent_Name" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="BDate" ColumnName="BDate" />
+          <ScalarProperty Name="Relationship" ColumnName="Relationship" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dept_Locations">
+      <EntityTypeMapping TypeName="CompanyModel.Dept_Locations">
+        <MappingFragment StoreEntitySet="Dept_Locations">
+          <ScalarProperty Name="DNUmber" ColumnName="DNUmber" />
+          <ScalarProperty Name="DLocation" ColumnName="DLocation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee">
+      <EntityTypeMapping TypeName="CompanyModel.Employee">
+        <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="FName" ColumnName="FName" />
+          <ScalarProperty Name="Minit" ColumnName="Minit" />
+          <ScalarProperty Name="LName" ColumnName="LName" />
+          <ScalarProperty Name="SSN" ColumnName="SSN" />
+          <ScalarProperty Name="BDate" ColumnName="BDate" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+          <ScalarProperty Name="SuperSSN" ColumnName="SuperSSN" />
+          <ScalarProperty Name="Dno" ColumnName="Dno" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Project">
+      <EntityTypeMapping TypeName="CompanyModel.Project">
+        <MappingFragment StoreEntitySet="Project">
+          <ScalarProperty Name="PName" ColumnName="PName" />
+          <ScalarProperty Name="PNumber" ColumnName="PNumber" />
+          <ScalarProperty Name="PLocation" ColumnName="PLocation" />
+          <ScalarProperty Name="DNum" ColumnName="DNum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Works_on">
+      <EntityTypeMapping TypeName="CompanyModel.Works_on">
+        <MappingFragment StoreEntitySet="Works_on">
+          <ScalarProperty Name="Essn" ColumnName="Essn" />
+          <ScalarProperty Name="Pno" ColumnName="Pno" />
+          <ScalarProperty Name="Hours" ColumnName="Hours" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="usp_CreateDepartment" FunctionName="CompanyModel.Store.usp_CreateDepartment" />
+    <FunctionImportMapping FunctionImportName="usp_DeleteDepartment" FunctionName="CompanyModel.Store.usp_DeleteDepartment" />
+    <FunctionImportMapping FunctionImportName="usp_GetAllDepartments" FunctionName="CompanyModel.Store.usp_GetAllDepartments">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CompanyModel.usp_GetAllDepartments_Result">
+          <ScalarProperty Name="DName" ColumnName="DName" />
+          <ScalarProperty Name="DNumber" ColumnName="DNumber" />
+          <ScalarProperty Name="MgrSSN" ColumnName="MgrSSN" />
+          <ScalarProperty Name="MgrStartDate" ColumnName="MgrStartDate" />
+          <ScalarProperty Name="C_Employees" ColumnName="#Employees" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_GetDepartment" FunctionName="CompanyModel.Store.usp_GetDepartment">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CompanyModel.usp_GetDepartment_Result">
+          <ScalarProperty Name="DName" ColumnName="DName" />
+          <ScalarProperty Name="DNumber" ColumnName="DNumber" />
+          <ScalarProperty Name="MgrSSN" ColumnName="MgrSSN" />
+          <ScalarProperty Name="MgrStartDate" ColumnName="MgrStartDate" />
+          <ScalarProperty Name="C_Employees" ColumnName="#Employees" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_UpdateDepartment" FunctionName="CompanyModel.Store.usp_UpdateDepartment" />
+    <FunctionImportMapping FunctionImportName="usp_UpdateDepartmentManager" FunctionName="CompanyModel.Store.usp_UpdateDepartmentManager" />
+  </EntityContainerMapping>
+</Mapping>

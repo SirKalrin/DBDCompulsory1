@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="DNumber" />
+    </Key>
+    <Property Name="DName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MgrSSN" Type="numeric" Precision="9" Scale="0" Nullable="false" />
+    <Property Name="MgrStartDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Dependent">
+    <Key>
+      <PropertyRef Name="Essn" />
+      <PropertyRef Name="Dependent_Name" />
+    </Key>
+    <Property Name="Essn" Type="numeric" Precision="9" Scale="0" Nullable="false" />
+    <Property Name="Dependent_Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Sex" Type="nchar" MaxLength="1" />
+    <Property Name="BDate" Type="datetime" />
+    <Property Name="Relationship" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Dept_Locations">
+    <Key>
+      <PropertyRef Name="DNUmber" />
+      <PropertyRef Name="DLocation" />
+    </Key>
+    <Property Name="DNUmber" Type="int" Nullable="false" />
+    <Property Name="DLocation" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="SSN" />
+    </Key>
+    <Property Name="FName" Type="varchar" MaxLength="50" />
+    <Property Name="Minit" Type="char" MaxLength="1" />
+    <Property Name="LName" Type="varchar" MaxLength="50" />
+    <Property Name="SSN" Type="numeric" Precision="9" Scale="0" Nullable="false" />
+    <Property Name="BDate" Type="datetime" />
+    <Property Name="Address" Type="varchar" MaxLength="50" />
+    <Property Name="Sex" Type="char" MaxLength="1" />
+    <Property Name="Salary" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="SuperSSN" Type="numeric" Precision="9" Scale="0" />
+    <Property Name="Dno" Type="int" />
+  </EntityType>
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="PNumber" />
+    </Key>
+    <Property Name="PName" Type="varchar" MaxLength="50" />
+    <Property Name="PNumber" Type="int" Nullable="false" />
+    <Property Name="PLocation" Type="varchar" MaxLength="50" />
+    <Property Name="DNum" Type="int" />
+  </EntityType>
+  <EntityType Name="Works_on">
+    <Key>
+      <PropertyRef Name="Essn" />
+      <PropertyRef Name="Pno" />
+    </Key>
+    <Property Name="Essn" Type="numeric" Precision="9" Scale="0" Nullable="false" />
+    <Property Name="Pno" Type="int" Nullable="false" />
+    <Property Name="Hours" Type="float" />
+  </EntityType>
+  <Association Name="FK_Department_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Department" Type="Self.Department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="SSN" />
+      </Principal>
+      <Dependent Role="Department">
+        <PropertyRef Name="MgrSSN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Dependent_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Dependent" Type="Self.Dependent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="SSN" />
+      </Principal>
+      <Dependent Role="Dependent">
+        <PropertyRef Name="Essn" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Dept_Locations_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Dept_Locations" Type="Self.Dept_Locations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DNumber" />
+      </Principal>
+      <Dependent Role="Dept_Locations">
+        <PropertyRef Name="DNUmber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DNumber" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="Dno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Employee1" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="SSN" />
+      </Principal>
+      <Dependent Role="Employee1">
+        <PropertyRef Name="SuperSSN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Project_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Project" Type="Self.Project" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DNumber" />
+      </Principal>
+      <Dependent Role="Project">
+        <PropertyRef Name="DNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Works_on_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Works_on" Type="Self.Works_on" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="SSN" />
+      </Principal>
+      <Dependent Role="Works_on">
+        <PropertyRef Name="Essn" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Works_on_Project">
+    <End Role="Project" Type="Self.Project" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Works_on" Type="Self.Works_on" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="PNumber" />
+      </Principal>
+      <Dependent Role="Works_on">
+        <PropertyRef Name="Pno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="usp_CreateDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="DName" Type="varchar" Mode="In" />
+    <Parameter Name="MgrSSN" Type="numeric" Mode="In" />
+  </Function>
+  <Function Name="usp_DeleteDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="DNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_GetAllDepartments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="usp_GetDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="DNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_UpdateDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="DNumber" Type="int" Mode="In" />
+    <Parameter Name="DName" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="usp_UpdateDepartmentManager" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="DNumber" Type="int" Mode="In" />
+    <Parameter Name="MgrSSN" Type="numeric" Mode="In" />
+  </Function>
+  <EntityContainer Name="CompanyModelStoreContainer">
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Dependent" EntityType="Self.Dependent" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Dept_Locations" EntityType="Self.Dept_Locations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Works_on" EntityType="Self.Works_on" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Department_Employee" Association="Self.FK_Department_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Department" EntitySet="Department" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Dependent_Employee" Association="Self.FK_Dependent_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Dependent" EntitySet="Dependent" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Dept_Locations_Department" Association="Self.FK_Dept_Locations_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Dept_Locations" EntitySet="Dept_Locations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Department" Association="Self.FK_Employee_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Employee" Association="Self.FK_Employee_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Employee1" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Project_Department" Association="Self.FK_Project_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Project" EntitySet="Project" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Works_on_Employee" Association="Self.FK_Works_on_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Works_on" EntitySet="Works_on" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Works_on_Project" Association="Self.FK_Works_on_Project">
+      <End Role="Project" EntitySet="Project" />
+      <End Role="Works_on" EntitySet="Works_on" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

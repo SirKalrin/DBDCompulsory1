@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="DNumber" />
+    </Key>
+    <Property Name="DName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MgrSSN" Type="Decimal" Nullable="false" Precision="9" Scale="0" />
+    <Property Name="MgrStartDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Department_Employee" FromRole="Department" ToRole="Employee" />
+    <NavigationProperty Name="Dept_Locations" Relationship="Self.FK_Dept_Locations_Department" FromRole="Department" ToRole="Dept_Locations" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK_Employee_Department" FromRole="Department" ToRole="Employee" />
+    <NavigationProperty Name="Project" Relationship="Self.FK_Project_Department" FromRole="Department" ToRole="Project" />
+  </EntityType>
+  <EntityType Name="Dependent">
+    <Key>
+      <PropertyRef Name="Essn" />
+      <PropertyRef Name="Dependent_Name" />
+    </Key>
+    <Property Name="Essn" Type="Decimal" Nullable="false" Precision="9" Scale="0" />
+    <Property Name="Dependent_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="BDate" Type="DateTime" Precision="3" />
+    <Property Name="Relationship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Dependent_Employee" FromRole="Dependent" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="Dept_Locations">
+    <Key>
+      <PropertyRef Name="DNUmber" />
+      <PropertyRef Name="DLocation" />
+    </Key>
+    <Property Name="DNUmber" Type="Int32" Nullable="false" />
+    <Property Name="DLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Dept_Locations_Department" FromRole="Dept_Locations" ToRole="Department" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="SSN" />
+    </Key>
+    <Property Name="FName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Minit" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="LName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SSN" Type="Decimal" Nullable="false" Precision="9" Scale="0" />
+    <Property Name="BDate" Type="DateTime" Precision="3" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="Salary" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="SuperSSN" Type="Decimal" Precision="9" Scale="0" />
+    <Property Name="Dno" Type="Int32" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Department_Employee" FromRole="Employee" ToRole="Department" />
+    <NavigationProperty Name="Department1" Relationship="Self.FK_Employee_Department" FromRole="Employee" ToRole="Department" />
+    <NavigationProperty Name="Dependent" Relationship="Self.FK_Dependent_Employee" FromRole="Employee" ToRole="Dependent" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK_Employee_Employee" FromRole="Employee" ToRole="Employee1" />
+    <NavigationProperty Name="Employee2" Relationship="Self.FK_Employee_Employee" FromRole="Employee1" ToRole="Employee" />
+    <NavigationProperty Name="Works_on" Relationship="Self.FK_Works_on_Employee" FromRole="Employee" ToRole="Works_on" />
+  </EntityType>
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="PNumber" />
+    </Key>
+    <Property Name="PName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PNumber" Type="Int32" Nullable="false" />
+    <Property Name="PLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DNum" Type="Int32" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Project_Department" FromRole="Project" ToRole="Department" />
+    <NavigationProperty Name="Works_on" Relationship="Self.FK_Works_on_Project" FromRole="Project" ToRole="Works_on" />
+  </EntityType>
+  <EntityType Name="Works_on">
+    <Key>
+      <PropertyRef Name="Essn" />
+      <PropertyRef Name="Pno" />
+    </Key>
+    <Property Name="Essn" Type="Decimal" Nullable="false" Precision="9" Scale="0" />
+    <Property Name="Pno" Type="Int32" Nullable="false" />
+    <Property Name="Hours" Type="Double" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Works_on_Employee" FromRole="Works_on" ToRole="Employee" />
+    <NavigationProperty Name="Project" Relationship="Self.FK_Works_on_Project" FromRole="Works_on" ToRole="Project" />
+  </EntityType>
+  <Association Name="FK_Department_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Department" Type="Self.Department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="SSN" />
+      </Principal>
+      <Dependent Role="Department">
+        <PropertyRef Name="MgrSSN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Dept_Locations_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Dept_Locations" Type="Self.Dept_Locations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DNumber" />
+      </Principal>
+      <Dependent Role="Dept_Locations">
+        <PropertyRef Name="DNUmber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DNumber" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="Dno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Project_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Project" Type="Self.Project" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DNumber" />
+      </Principal>
+      <Dependent Role="Project">
+        <PropertyRef Name="DNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Dependent_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Dependent" Type="Self.Dependent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="SSN" />
+      </Principal>
+      <Dependent Role="Dependent">
+        <PropertyRef Name="Essn" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Employee1" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="SSN" />
+      </Principal>
+      <Dependent Role="Employee1">
+        <PropertyRef Name="SuperSSN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Works_on_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Works_on" Type="Self.Works_on" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="SSN" />
+      </Principal>
+      <Dependent Role="Works_on">
+        <PropertyRef Name="Essn" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Works_on_Project">
+    <End Role="Project" Type="Self.Project" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Works_on" Type="Self.Works_on" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="PNumber" />
+      </Principal>
+      <Dependent Role="Works_on">
+        <PropertyRef Name="Pno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CompanyEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Department" EntityType="Self.Department" />
+    <EntitySet Name="Dependent" EntityType="Self.Dependent" />
+    <EntitySet Name="Dept_Locations" EntityType="Self.Dept_Locations" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" />
+    <EntitySet Name="Project" EntityType="Self.Project" />
+    <EntitySet Name="Works_on" EntityType="Self.Works_on" />
+    <AssociationSet Name="FK_Department_Employee" Association="Self.FK_Department_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Department" EntitySet="Department" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Dept_Locations_Department" Association="Self.FK_Dept_Locations_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Dept_Locations" EntitySet="Dept_Locations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Department" Association="Self.FK_Employee_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Project_Department" Association="Self.FK_Project_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Project" EntitySet="Project" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Dependent_Employee" Association="Self.FK_Dependent_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Dependent" EntitySet="Dependent" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Employee" Association="Self.FK_Employee_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Employee1" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Works_on_Employee" Association="Self.FK_Works_on_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Works_on" EntitySet="Works_on" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Works_on_Project" Association="Self.FK_Works_on_Project">
+      <End Role="Project" EntitySet="Project" />
+      <End Role="Works_on" EntitySet="Works_on" />
+    </AssociationSet>
+    <FunctionImport Name="usp_CreateDepartment" ReturnType="Collection(Decimal)">
+      <Parameter Name="DName" Mode="In" Type="String" />
+      <Parameter Name="MgrSSN" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="usp_DeleteDepartment">
+      <Parameter Name="DNumber" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="usp_GetAllDepartments" ReturnType="Collection(CompanyModel.usp_GetAllDepartments_Result)" />
+    <FunctionImport Name="usp_GetDepartment" ReturnType="Collection(CompanyModel.usp_GetDepartment_Result)">
+      <Parameter Name="DNumber" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="usp_UpdateDepartment">
+      <Parameter Name="DNumber" Mode="In" Type="Int32" />
+      <Parameter Name="DName" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="usp_UpdateDepartmentManager">
+      <Parameter Name="DNumber" Mode="In" Type="Int32" />
+      <Parameter Name="MgrSSN" Mode="In" Type="Decimal" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="usp_GetAllDepartments_Result">
+    <Property Type="String" Name="DName" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="DNumber" Nullable="false" />
+    <Property Type="Decimal" Name="MgrSSN" Nullable="false" Precision="9" Scale="0" />
+    <Property Type="DateTime" Name="MgrStartDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="C_Employees" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="usp_GetDepartment_Result">
+    <Property Type="String" Name="DName" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="DNumber" Nullable="false" />
+    <Property Type="Decimal" Name="MgrSSN" Nullable="false" Precision="9" Scale="0" />
+    <Property Type="DateTime" Name="MgrStartDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="C_Employees" Nullable="true" />
+  </ComplexType>
+</Schema>
